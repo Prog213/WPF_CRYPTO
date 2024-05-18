@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF_CRYPTO.ViewModels;
 
 namespace WPF_CRYPTO
 {
@@ -16,9 +17,17 @@ namespace WPF_CRYPTO
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await viewModel.LoadTopCurrencies(10);
         }
     }
 }
