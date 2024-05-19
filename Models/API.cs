@@ -69,12 +69,8 @@ namespace WPF_CRYPTO.Models
 
                     }
                 }
-                else
-                {
-                    Console.WriteLine($"Error: {response.StatusCode}");
-                }
             }
-            catch (Exception ex)
+            catch
             {
                 ;
             }
