@@ -1,20 +1,23 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WPF_CRYPTO.Models;
 
 namespace WPF_CRYPTO.ViewModels
 {
-    public class MainPageModel : INotifyPropertyChanged
+    public class CurrenciesPageModel : ViewModelBase
     {
-        private API api;
-        private ObservableCollection<Cryptocurrency> cryptocurrencies;
+        public ICommand DetailPageCommand { get; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private API api;
+
+        private ObservableCollection<Cryptocurrency> cryptocurrencies;
 
         public ObservableCollection<Cryptocurrency> Cryptocurrencies
         {
@@ -26,13 +29,14 @@ namespace WPF_CRYPTO.ViewModels
             }
         }
 
-        public MainPageModel()
+        public CurrenciesPageModel()
         {
             api = new API();
             Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
+            LoadTopCurrencies(10);
         }
 
-        public async Task LoadTopCurrencies(int count)
+        public async void LoadTopCurrencies(int count)
         {
             var currencies = await api.GetTopCurrencies(count);
             if (currencies != null)
@@ -43,11 +47,6 @@ namespace WPF_CRYPTO.ViewModels
                     Cryptocurrencies.Add(currency);
                 }
             }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -4,12 +4,78 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF_CRYPTO.Views"
+      xmlns:view_models="clr-namespace:WPF_CRYPTO.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DetailPage">
 
     <Grid>
-        <TextBlock Text="Top 10" FontWeight="Bold" FontSize="20" 
-                   HorizontalAlignment="Center" Margin="0,10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <TextBlock Text="Select Cryptocurrency: " VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="cmbCryptocurrencies"
+                      ItemsSource="{Binding Cryptocurrencies}"
+                      SelectedItem="{Binding SelectedCryptocurrency, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Name"
+                      Width="200"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10">
+            <StackPanel Margin="10">
+                <TextBlock Text="{Binding SelectedCryptocurrency.Name}" FontWeight="Bold" FontSize="18"/>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="Rank: "/>
+            <Run Text="{Binding SelectedCryptocurrency.Rank}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="Symbol: "/>
+            <Run Text="{Binding SelectedCryptocurrency.Symbol}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="Supply: "/>
+            <Run Text="{Binding SelectedCryptocurrency.Supply}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="MaxSupply: "/>
+            <Run Text="{Binding SelectedCryptocurrency.MaxSupply}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="MarketCapUsd: "/>
+            <Run Text="{Binding SelectedCryptocurrency.MarketCapUsd}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="VolumeUsd24Hr: "/>
+            <Run Text="{Binding SelectedCryptocurrency.VolumeUsd24Hr}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="PriceUsd: "/>
+            <Run Text="{Binding SelectedCryptocurrency.PriceUsd}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="ChangePercent24Hr: "/>
+            <Run Text="{Binding SelectedCryptocurrency.ChangePercent24Hr}"/>
+                </TextBlock>
+
+                <TextBlock Margin="0,5,0,0">
+            <Run Text="Vwap24Hr: "/>
+            <Run Text="{Binding SelectedCryptocurrency.Vwap24Hr}"/>
+                </TextBlock>
+
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Page>

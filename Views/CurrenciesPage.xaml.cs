@@ -19,21 +19,11 @@ namespace WPF_CRYPTO.Views
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class CurrienciesPage : Page
     {
-        private MainPageModel viewModel;
-
-        public MainPage()
+        public CurrienciesPage()
         {
             InitializeComponent();
-            viewModel = new MainPageModel();
-            DataContext = viewModel;
-            Loaded += Window_Loaded;
-        }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            await viewModel.LoadTopCurrencies(10);
         }
     }
 }
