@@ -7,46 +7,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WPF_CRYPTO.Commands;
 using WPF_CRYPTO.Models;
+using WPF_CRYPTO.Navigation;
+using WPF_CRYPTO.Stores;
 
 namespace WPF_CRYPTO.ViewModels
 {
     public class CurrenciesPageModel : ViewModelBase
     {
-        public ICommand DetailPageCommand { get; }
+        public ICommand ListBox_Changed { get; }
 
-        private API api;
+        private CurrencyStore _currencyStore;
+        private NavigationStore _navigationStore;
 
-        private ObservableCollection<Cryptocurrency> cryptocurrencies;
-
-        public ObservableCollection<Cryptocurrency> Cryptocurrencies
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
+        public Cryptocurrency SelectedCryptocurrency
         {
-            get { return cryptocurrencies; }
+            get { return null; }
             set
             {
-                cryptocurrencies = value;
-                OnPropertyChanged(nameof(Cryptocurrencies));
+                _currencyStore.SelectedCryptocurrency = value;
+                OnPropertyChanged(nameof(SelectedCryptocurrency));
             }
         }
 
-        public CurrenciesPageModel()
+        public CurrenciesPageModel(CurrencyStore currencyStore, NavigationStore navigationStore)
         {
-            api = new API();
-            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
-            LoadTopCurrencies(10);
-        }
-
-        public async void LoadTopCurrencies(int count)
-        {
-            var currencies = await api.GetTopCurrencies(count);
-            if (currencies != null)
-            {
-                Cryptocurrencies.Clear();
-                foreach (var currency in currencies)
-                {
-                    Cryptocurrencies.Add(currency);
-                }
-            }
+            _navigationStore = navigationStore;
+            _currencyStore = currencyStore;
+            ListBox_Changed = new NavigateCommand<DetailPageModel>
+                (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel(_currencyStore)));
         }
     }
 }

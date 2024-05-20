@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:local="clr-namespace:WPF_CRYPTO.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -15,7 +16,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="Top 10 Cryptocurrencies" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Cryptocurrencies}">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Cryptocurrencies}" SelectedItem="{Binding SelectedCryptocurrency}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding ListBox_Changed}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

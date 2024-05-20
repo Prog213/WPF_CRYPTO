@@ -7,14 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WPF_CRYPTO.Commands;
 using WPF_CRYPTO.Models;
+using WPF_CRYPTO.Navigation;
+using WPF_CRYPTO.Stores;
 
 namespace WPF_CRYPTO.ViewModels
 {
     class SearchPageModel : ViewModelBase
     {
-        private API api;
-        private ObservableCollection<Cryptocurrency> Cryptocurrencies;
+        private CurrencyStore _currencyStore;
+        private NavigationStore _navigationStore;
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
+
+        public Cryptocurrency SelectedCryptocurrency
+        {
+            get { return null; }
+            set
+            {
+                _currencyStore.SelectedCryptocurrency = value;
+                OnPropertyChanged(nameof(SelectedCryptocurrency));
+            }
+        }
+
         private ObservableCollection<Cryptocurrency> searchResults;
 
         public ObservableCollection<Cryptocurrency> SearchResults
@@ -26,7 +41,6 @@ namespace WPF_CRYPTO.ViewModels
                 OnPropertyChanged(nameof(SearchResults));
             }
         }
-
         private string searchKeyword;
         public string SearchKeyword
         {
@@ -39,29 +53,23 @@ namespace WPF_CRYPTO.ViewModels
             }
         }
 
-        public ICommand SearchCommand { get; private set; }
+        public ICommand SearchCommand { get; }
 
-        public SearchPageModel()
+        public ICommand ListBox_Changed { get; }
+
+        public SearchPageModel(CurrencyStore currencyStore, NavigationStore navigationStore)
         {
-            api = new API();
-            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
+            _navigationStore = navigationStore;
+            _currencyStore = currencyStore;
+
             SearchResults = new ObservableCollection<Cryptocurrency>();
-            LoadCurrencies(10);
+
             SearchCommand = new RelayCommand(SearchCryptocurrencies);
+
+            ListBox_Changed = new NavigateCommand<DetailPageModel>
+                (new NavigationService<DetailPageModel>(_navigationStore, () => new DetailPageModel(_currencyStore)));
         }
 
-        public async void LoadCurrencies(int count)
-        {
-            var currencies = await api.GetTopCurrencies(count);
-            if (currencies != null)
-            {
-                Cryptocurrencies.Clear();
-                foreach (var currency in currencies)
-                {
-                    Cryptocurrencies.Add(currency);
-                }
-            }
-        }
 
         private void SearchCryptocurrencies()
         {

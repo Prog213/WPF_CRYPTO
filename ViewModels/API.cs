@@ -6,8 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WPF_CRYPTO.Models;
 
-namespace WPF_CRYPTO.Models
+namespace WPF_CRYPTO.ViewModels
 {
     public class API
     {
@@ -47,7 +48,7 @@ namespace WPF_CRYPTO.Models
                                 Supply = Math.Round(decimal.Parse(currencyProperty.GetProperty("supply").GetString(), CultureInfo.InvariantCulture)),
                                 MarketCapUsd = Math.Round(decimal.Parse(currencyProperty.GetProperty("marketCapUsd").GetString(), CultureInfo.InvariantCulture)),
                                 VolumeUsd24Hr = Math.Round(decimal.Parse(currencyProperty.GetProperty("volumeUsd24Hr").GetString(), CultureInfo.InvariantCulture)),
-                                PriceUsd = Math.Round(decimal.Parse(currencyProperty.GetProperty("priceUsd").GetString(), CultureInfo.InvariantCulture)),
+                                PriceUsd = Math.Round(decimal.Parse(currencyProperty.GetProperty("priceUsd").GetString(), CultureInfo.InvariantCulture), 3),
                                 ChangePercent24Hr = Math.Round(decimal.Parse(currencyProperty.GetProperty("changePercent24Hr").GetString(), CultureInfo.InvariantCulture), 5),
                                 Vwap24Hr = Math.Round(decimal.Parse(currencyProperty.GetProperty("vwap24Hr").GetString(), CultureInfo.InvariantCulture))
                             };
