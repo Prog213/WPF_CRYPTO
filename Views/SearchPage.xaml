@@ -15,9 +15,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <Label Content="Search Cryptocurrency:" FontWeight="Bold" />
-            <TextBox Grid.Row="0" x:Name="txtSearch" Width="200" Margin="0,5" Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
+            <Label Content="Search Cryptocurrency:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="0" Width="200" Margin="5" Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedCryptocurrency}">

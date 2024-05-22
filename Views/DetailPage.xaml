@@ -22,10 +22,13 @@
                       SelectedItem="{Binding SelectedCryptocurrency, Mode=TwoWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Name"
-                      Width="200"/>
+                      Width="200" Background="Black">
+            </ComboBox>
         </StackPanel>
+        <Rectangle Grid.Row="0" Height="0.5" Fill="Gray" VerticalAlignment="Bottom" />
 
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10">
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="0" Margin="10">
+
             <StackPanel Margin="10">
                 <TextBlock Text="{Binding SelectedCryptocurrency.Name}" FontWeight="Bold" FontSize="18"/>
 

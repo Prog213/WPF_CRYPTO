@@ -30,6 +30,8 @@ namespace WPF_CRYPTO.ViewModels
 
         public ICommand ConvertPageButton_Click { get; }
 
+        public ICommand SettingsPageButton_Click { get; }
+
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
         public MainViewModel(NavigationStore navigationStore, CurrencyStore currencyStore)
         {
@@ -45,20 +47,13 @@ namespace WPF_CRYPTO.ViewModels
                 (new NavigationService<SearchPageModel>(navigationStore, () => new SearchPageModel(_currencyStore, _navigationStore)));
             ConvertPageButton_Click = new NavigateCommand<ConvertPageModel>
                 (new NavigationService<ConvertPageModel>(navigationStore, () => new ConvertPageModel(_currencyStore)));
+            SettingsPageButton_Click = new NavigateCommand<SettingsPageModel>
+                (new NavigationService<SettingsPageModel>(navigationStore, () => new SettingsPageModel()));
         }
 
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-
-
-
-
-        //public ICommand MainPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new MainPage()));
-
-        //public ICommand DetailPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new DetailPage()));
-
-        //public ICommand SearchPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new SearchPage()));
     }
 }

@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Top 10 Cryptocurrencies" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="Top 10 Cryptocurrencies" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="5"/>
         <ListBox Grid.Row="1" ItemsSource="{Binding Cryptocurrencies}" SelectedItem="{Binding SelectedCryptocurrency}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
