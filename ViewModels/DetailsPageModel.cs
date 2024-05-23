@@ -1,16 +1,17 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPF_CRYPTO.Models;
+using WPF_CRYPTO.Navigation;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 
 namespace WPF_CRYPTO.ViewModels
 {
-    public class DetailPageModel : ViewModelBase
+    public class DetailsPageModel : ViewModelBase
     {
         private CurrencyStore _currencyStore;
         public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
@@ -25,7 +26,7 @@ namespace WPF_CRYPTO.ViewModels
             }
         }
 
-        public DetailPageModel(CurrencyStore currencyStore)
+        public DetailsPageModel(CurrencyStore currencyStore)
         {
             _currencyStore = currencyStore;
         }

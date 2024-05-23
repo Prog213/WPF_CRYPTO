@@ -21,10 +21,5 @@ namespace WPF_CRYPTO
         {
             InitializeComponent();
         }
-
-        private void contentFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-
-        }
     }
 }

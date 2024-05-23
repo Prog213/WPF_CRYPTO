@@ -17,7 +17,7 @@ namespace WPF_CRYPTO.Stores
         public CurrencyStore()
         {
             Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
-            LoadTopCurrencies(10).GetAwaiter().GetResult();
+            LoadTopCurrencies(10);
         }
 
         public async Task LoadTopCurrencies(int count)

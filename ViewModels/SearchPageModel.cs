@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WPF_CRYPTO.Commands;
 using WPF_CRYPTO.Models;
 using WPF_CRYPTO.Navigation;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 
 namespace WPF_CRYPTO.ViewModels
 {
-    class SearchPageModel : ViewModelBase
+    class SearchPageModel : NavigateViewModelBase
     {
         private CurrencyStore _currencyStore;
-        private NavigationStore _navigationStore;
         public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
 
         public Cryptocurrency SelectedCryptocurrency
@@ -57,17 +56,15 @@ namespace WPF_CRYPTO.ViewModels
 
         public ICommand ListBox_Changed { get; }
 
-        public SearchPageModel(CurrencyStore currencyStore, NavigationStore navigationStore)
+        public SearchPageModel(CurrencyStore currencyStore, INavigationService navigationService) : base(navigationService)
         {
-            _navigationStore = navigationStore;
             _currencyStore = currencyStore;
 
             SearchResults = new ObservableCollection<Cryptocurrency>();
 
             SearchCommand = new RelayCommand(SearchCryptocurrencies);
 
-            ListBox_Changed = new NavigateCommand<DetailPageModel>
-                (new NavigationService<DetailPageModel>(_navigationStore, () => new DetailPageModel(_currencyStore)));
+            ListBox_Changed = new RelayCommand(Navigation.NavigateTo<DetailsPageModel>);
         }
 
 

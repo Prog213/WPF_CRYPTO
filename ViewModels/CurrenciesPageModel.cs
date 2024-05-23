@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,19 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WPF_CRYPTO.Commands;
 using WPF_CRYPTO.Models;
 using WPF_CRYPTO.Navigation;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 
 namespace WPF_CRYPTO.ViewModels
 {
-    public class CurrenciesPageModel : ViewModelBase
+    public class CurrenciesPageModel : NavigateViewModelBase
     {
         public ICommand ListBox_Changed { get; }
 
         private CurrencyStore _currencyStore;
-        private NavigationStore _navigationStore;
 
         public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
         public Cryptocurrency SelectedCryptocurrency
@@ -32,12 +32,10 @@ namespace WPF_CRYPTO.ViewModels
             }
         }
 
-        public CurrenciesPageModel(CurrencyStore currencyStore, NavigationStore navigationStore)
+        public CurrenciesPageModel(CurrencyStore currencyStore, INavigationService navigationService) : base(navigationService)
         {
-            _navigationStore = navigationStore;
             _currencyStore = currencyStore;
-            ListBox_Changed = new NavigateCommand<DetailPageModel>
-                (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel(_currencyStore)));
+            ListBox_Changed = new RelayCommand(Navigation.NavigateTo<DetailsPageModel>);
         }
     }
 }

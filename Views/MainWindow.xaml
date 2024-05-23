@@ -40,7 +40,7 @@
         </Grid.RowDefinitions>
 
         <Frame x:Name="contentFrame" Grid.Row="0"
-               Content="{Binding CurrentViewModel}" Navigated="contentFrame_Navigated">
+               Content="{Binding Navigation.CurrentView}">
             <Frame.Resources>
 
                 <Style TargetType="Frame">
@@ -51,7 +51,7 @@
                     <views:CurrienciesPage/>
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type vms:DetailPageModel}">
+                <DataTemplate DataType="{x:Type vms:DetailsPageModel}">
                     <views:DetailPage />
                 </DataTemplate>
 

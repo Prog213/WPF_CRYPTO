@@ -9,18 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WPF_CRYPTO.Commands;
 using WPF_CRYPTO.Models;
 using WPF_CRYPTO.Navigation;
 using WPF_CRYPTO.Views;
-using WPF_CRYPTO.ViewModels;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 
 namespace WPF_CRYPTO.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : NavigateViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private CurrencyStore _currencyStore;
         public ICommand CurrencyPageButton_Click { get; }
 
@@ -32,28 +30,15 @@ namespace WPF_CRYPTO.ViewModels
 
         public ICommand SettingsPageButton_Click { get; }
 
-        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
-        public MainViewModel(NavigationStore navigationStore, CurrencyStore currencyStore)
+        public MainViewModel(CurrencyStore currencyStore, INavigationService navigationService) : base(navigationService)
         {
             _currencyStore = currencyStore;
-            _navigationStore = navigationStore;
-            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 
-            CurrencyPageButton_Click = new NavigateCommand<CurrenciesPageModel>
-                (new NavigationService<CurrenciesPageModel>(navigationStore, () => new CurrenciesPageModel(_currencyStore, _navigationStore)));
-            DetailPageButton_Click = new NavigateCommand<DetailPageModel>
-                (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel(_currencyStore)));
-            SearchPageButton_Click = new NavigateCommand<SearchPageModel>
-                (new NavigationService<SearchPageModel>(navigationStore, () => new SearchPageModel(_currencyStore, _navigationStore)));
-            ConvertPageButton_Click = new NavigateCommand<ConvertPageModel>
-                (new NavigationService<ConvertPageModel>(navigationStore, () => new ConvertPageModel(_currencyStore)));
-            SettingsPageButton_Click = new NavigateCommand<SettingsPageModel>
-                (new NavigationService<SettingsPageModel>(navigationStore, () => new SettingsPageModel()));
-        }
-
-        private void OnCurrentViewModelChanged()
-        {
-            OnPropertyChanged(nameof(CurrentViewModel));
+            CurrencyPageButton_Click = new RelayCommand(Navigation.NavigateTo<CurrenciesPageModel>);
+            DetailPageButton_Click = new RelayCommand(Navigation.NavigateTo<DetailsPageModel>);
+            SearchPageButton_Click = new RelayCommand(Navigation.NavigateTo<SearchPageModel>);
+            ConvertPageButton_Click = new RelayCommand(Navigation.NavigateTo<ConvertPageModel>);
+            SettingsPageButton_Click = new RelayCommand(Navigation.NavigateTo<SettingsPageModel>);
         }
     }
 }

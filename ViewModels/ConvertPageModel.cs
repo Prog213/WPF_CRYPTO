@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPF_CRYPTO.Models;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 
 namespace WPF_CRYPTO.ViewModels
 {
@@ -83,8 +85,14 @@ namespace WPF_CRYPTO.ViewModels
         {
             if (SelectedCurrencyFrom != null && SelectedCurrencyTo != null && !string.IsNullOrEmpty(AmountFromText))
             {
-                decimal amountFrom = decimal.Parse(AmountFromText);
-                AmountTo = Math.Round((SelectedCurrencyFrom.PriceUsd * amountFrom) / SelectedCurrencyTo.PriceUsd, 5);
+                var amountFromText = AmountFromText.Replace('.', ',');
+                decimal amountFrom = 0; 
+
+                decimal.TryParse(amountFromText, out amountFrom);
+                if (amountFrom > 0)
+                {
+                    AmountTo = Math.Round((SelectedCurrencyFrom.PriceUsd * amountFrom) / SelectedCurrencyTo.PriceUsd, 5);
+                }
             }
             else
             {

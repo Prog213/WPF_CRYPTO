@@ -1,8 +1,12 @@
-﻿using System.Configuration;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.CodeDom;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 using WPF_CRYPTO.Navigation;
 using WPF_CRYPTO.Stores;
+using WPF_CRYPTO.ViewModelBases;
 using WPF_CRYPTO.ViewModels;
 
 namespace WPF_CRYPTO
@@ -12,25 +16,43 @@ namespace WPF_CRYPTO
     /// </summary>
     public partial class App : Application
     {
-        private readonly NavigationStore _navigationStore;
-        private CurrencyStore _currencyStore;
+        private ServiceProvider _serviceProvider;
 
         public App()
         {
-            _navigationStore = new NavigationStore();
-            _currencyStore = new CurrencyStore();
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<CurrencyStore>();
+
+            services.AddSingleton(provider => new MainWindow()
+            {
+                DataContext = provider.GetRequiredService<MainViewModel>()
+            });
+
+            services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
+                viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+
+            services.AddSingleton<ViewModelBase>();
+            services.AddSingleton<NavigateViewModelBase>();
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<CurrenciesPageModel>();
+            services.AddSingleton<DetailsPageModel>();
+            services.AddSingleton<SearchPageModel>();
+            services.AddSingleton<ConvertPageModel>();
+            services.AddSingleton<SettingsPageModel>();
+
+            services.AddSingleton<INavigationService, NavigationService>();
+
+            _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = new CurrenciesPageModel(_currencyStore, _navigationStore);
+            var navigationService = _serviceProvider.GetRequiredService<INavigationService>();
+            navigationService.Initialize<CurrenciesPageModel>();
 
-            MainWindow = new MainWindow()
-            {
-                DataContext = new MainViewModel(_navigationStore, _currencyStore)
-            };
-
-            MainWindow.Show();
+            var mainwindow = _serviceProvider.GetRequiredService<MainWindow>();
+            mainwindow.Show();
             base.OnStartup(e);
         }
     }
